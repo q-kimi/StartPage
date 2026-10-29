@@ -1,0 +1,24 @@
+/* dock */
+#dock{position:fixed;right:16px;bottom:16px;z-index:5;display:flex;gap:2px;padding:4px;border:1px solid var(--input);border-radius:999px;background:#0a0a0acc;backdrop-filter:blur(14px) saturate(1.4);box-shadow:0 10px 30px #000a}
+.dk{display:inline-flex;align-items:center;justify-content:center;gap:7px;height:34px;padding:0 14px 0 12px;border:0;border-radius:999px;background:none;color:var(--muted-foreground);font-size:13px;font-weight:500;cursor:pointer;transition:color .25s,background-color .3s,transform .2s var(--ease)}
+.dk:hover{color:var(--foreground);background:color-mix(in srgb,var(--foreground) 8%,transparent)}
+.dk:active{transform:scale(.94)}
+.dk.on{color:var(--ring);background:color-mix(in srgb,var(--ring) 16%,transparent)}
+.dk svg{width:18px;height:18px;transition:transform .5s var(--ease)}
+#st:hover svg{transform:rotate(90deg)}
+#ed:hover svg{transform:rotate(-12deg) scale(1.1)}
+.dk.icon{width:34px;padding:0}
+.edit #ed{color:var(--ring);border-color:var(--ring)}
+
+/* buttons / inputs */
+.btn{height:34px;padding:0 14px;border-radius:8px;border:1px solid var(--input);background:none;font-size:14px;font-weight:500;cursor:pointer;transition:background-color .15s,color .15s,border-color .15s,transform .1s}
+.btn:hover{background:var(--accent)}
+.btn:active{transform:scale(.97)}
+.btn.p{background:#fafafa;border-color:#fafafa;color:#18181b}
+.btn.p:hover{background:#e4e4e7}
+.btn.danger{color:var(--destructive);border-color:#ef444455}
+.btn.danger:hover{background:#ef444418}
+.btn.danger.armed{background:var(--destructive);border-color:var(--destructive);color:#fff}
+.inp{width:100%;height:38px;padding:0 10px;border:1px solid var(--input);border-radius:8px;background:none;outline:0;font-size:14px;transition:border-color .15s,box-shadow .15s}
+.inp:focus{border-color:var(--ring);box-shadow:0 0 0 3px color-mix(in srgb,var(--ring) 25%,transparent)}
+

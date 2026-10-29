@@ -1,0 +1,10 @@
+{
+  "name": "page-d-accueil",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Page d'accueil personnelle : recherche, moteurs, favoris groupes, PWA",
+  "scripts": {
+    "start": "npx http-server . -a 127.0.0.1 -p 8765 -c-1 --silent",
+    "build": "node build.js"
+  }
+}

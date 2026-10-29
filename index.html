@@ -1,0 +1,80 @@
+<!doctype html>
+<html lang="fr" class="dark">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="color-scheme" content="dark">
+<title>Page d'accueil</title>
+<meta name="theme-color" content="#000000">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" href="icons/icon-192.png" type="image/png">
+<link rel="apple-touch-icon" href="icons/icon-192.png">
+<link rel="preconnect" href="https://www.google.com">
+<link rel="stylesheet" href="css/base.css">
+<link rel="stylesheet" href="css/composer.css">
+<link rel="stylesheet" href="css/links.css">
+<link rel="stylesheet" href="css/controls.css">
+<link rel="stylesheet" href="css/overlays.css">
+<link rel="stylesheet" href="css/motion.css">
+<script defer src="js/data.js"></script>
+<script defer src="js/util.js"></script>
+<script defer src="js/icons.js"></script>
+<script defer src="js/symbols.js"></script>
+<script defer src="js/state.js"></script>
+<script defer src="js/core.js"></script>
+<script defer src="js/settings.js"></script>
+<script defer src="js/links.js"></script>
+<script defer src="js/dnd.js"></script>
+<script defer src="js/dialog.js"></script>
+<script defer src="js/composer.js"></script>
+<script defer src="js/greeting.js"></script>
+<script defer src="js/main.js"></script>
+</head>
+<body class="boot">
+<main>
+  <h1 id="greet"><span id="gt"></span><button type="button" id="gn" class="nm"></button></h1>
+
+  <div class="composer" id="cp">
+    <textarea id="q" rows="1" autocomplete="off" spellcheck="false" autofocus></textarea>
+    <div class="tools">
+      <div id="eng"></div>
+      <button class="send" id="send" type="button" disabled aria-label="Envoyer"></button>
+    </div>
+  </div>
+
+  <div id="rec" hidden></div>
+
+  <div class="wrap">
+    <div id="list"></div>
+  </div>
+  <button class="add" id="ng"></button>
+</main>
+
+<div id="dock">
+  <button class="dk" id="ed"></button>
+  <button class="dk icon" id="st" aria-label="Paramètres"></button>
+</div>
+
+<dialog class="modal" id="dlg">
+  <form id="df" method="dialog">
+    <h3 id="dt"></h3>
+    <label class="field">Nom<span id="dnf" class="opt" hidden> (facultatif)</span><input class="inp" id="dn" required autocomplete="off"></label>
+    <label class="field" id="du">URL<span class="fw"><input class="inp" id="dv" placeholder="youtube.com" inputmode="url" autocomplete="off"><img id="dp" alt="" hidden></span></label>
+    <label class="field" id="dki">Icône<span class="opt"> (URL d'image, facultatif)</span><input class="inp" id="dk" placeholder="https://.../icon.png" inputmode="url" autocomplete="off"></label>
+    <div class="field" id="di">Symbole<div class="ipk" id="ip"></div></div>
+    <div class="foot"><button class="btn" type="button" id="dc">Annuler</button><button class="btn p">Enregistrer</button></div>
+  </form>
+</dialog>
+
+<dialog class="sheet" id="sheet">
+  <header>
+    <div><h3>Paramètres</h3><p>Personnalise ta page de démarrage.</p></div>
+    <button class="x" id="sx" aria-label="Fermer"></button>
+  </header>
+  <div id="sbody"></div>
+</dialog>
+
+<div id="toast" role="status"></div>
+
+</body>
+</html>

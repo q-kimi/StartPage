@@ -1,0 +1,40 @@
+/* header */
+h1{min-height:1.2em;font:400 clamp(30px,5vw,44px)/1.2 Georgia,"Times New Roman",serif;letter-spacing:-.01em;text-align:center}
+
+/* composer */
+.composer{position:relative;isolation:isolate;max-width:720px;margin:36px auto 56px;padding:18px 14px 12px 20px;border:1px solid var(--input);border-radius:22px;box-shadow:0 2px 8px #0008;cursor:text;transition:border-color .5s,box-shadow .6s var(--ease),transform .5s var(--ease)}
+.composer::after{content:"";position:absolute;inset:0;z-index:-1;border-radius:inherit;background:var(--card)}
+.composer::before{content:"";position:absolute;inset:-1px;z-index:-2;border-radius:inherit;pointer-events:none;opacity:0;filter:blur(18px);will-change:opacity;background:conic-gradient(from var(--a),transparent 0turn,var(--g1) .12turn,var(--g2) .3turn,transparent .5turn,var(--g3) .62turn,var(--g4) .8turn,transparent 1turn);transition:opacity .8s var(--ease);animation:sweep 7s linear infinite paused}
+.composer:focus-within::before{opacity:.6;animation-play-state:running}
+@keyframes sweep{to{--a:360deg}}
+.composer:focus-within{border-color:color-mix(in srgb,var(--eng) 50%,#3f3f46);box-shadow:0 2px 8px #0008,0 0 0 1px color-mix(in srgb,var(--eng) 25%,transparent),0 18px 60px color-mix(in srgb,var(--eng) 14%,transparent);transform:translateY(-1px)}
+.composer.ping{animation:ping .9s var(--ease)}
+#q{display:block;width:100%;min-height:52px;max-height:160px;padding:0;resize:none;background:none;border:0;outline:0;font-size:16px;line-height:1.6;overflow-y:auto}
+#q::placeholder{color:var(--muted-foreground);transition:opacity .2s}
+#q:focus::placeholder{opacity:.6}
+.tools{display:flex;align-items:center;gap:8px;margin-top:12px;cursor:default}
+#eng{display:flex;align-items:center;gap:2px}
+.chip{touch-action:pan-y;user-select:none;display:inline-flex;align-items:center;height:34px;padding:0 8px;border:1px solid transparent;border-radius:999px;background:none;color:var(--muted-foreground);font-size:13px;font-weight:500;cursor:pointer;transition:background-color .35s,border-color .35s,color .25s,padding .45s var(--spring),transform .2s var(--ease)}
+.chip img{-webkit-user-drag:none}
+.chip:active{transform:scale(.92)}
+.chip.lift{transition:none;z-index:2;cursor:grabbing;box-shadow:0 8px 24px #000c;background:color-mix(in srgb,var(--foreground) 12%,#0a0a0a)}
+.eg{display:flex;align-items:center;gap:10px}
+.eg img{border-radius:5px}
+.mini{height:28px;padding:0 10px;border:1px solid var(--input);border-radius:8px;background:none;color:var(--muted-foreground);font-size:12px;cursor:pointer;transition:color .15s,background-color .15s}
+.mini:hover{color:var(--destructive);background:#ef444418}
+.chip:hover:not([aria-pressed=true]){background:color-mix(in srgb,var(--foreground) 7%,transparent)}
+.chip img{width:18px;height:18px;border-radius:5px;opacity:.5;filter:grayscale(1);transition:opacity .25s,filter .3s,transform .3s var(--ease)}
+.chip span{max-width:0;padding-left:0;overflow:hidden;white-space:nowrap;opacity:0;transform:translateX(-8px);transition:max-width .5s var(--spring),padding .5s var(--spring),opacity .3s,transform .5s var(--spring)}
+.chip:hover img{opacity:1;filter:none;transform:scale(1.12)}
+.chip[aria-pressed=true]{color:var(--foreground);padding-right:12px;background:color-mix(in srgb,var(--eng) 14%,transparent);border-color:color-mix(in srgb,var(--eng) 40%,transparent)}
+.chip[aria-pressed=true] img{opacity:1;filter:none;animation:pop .6s var(--spring)}
+.chip[aria-pressed=true] span{max-width:90px;padding-left:7px;opacity:1;transform:none}
+/* trop de moteurs: pas de libelle, largeur constante donc la barre ne saute plus */
+.cp .chip span{display:none}.cp .chip[aria-pressed=true]{padding-right:8px}
+.send{margin-left:auto;display:grid;place-items:center;flex:none;width:34px;height:34px;border:0;border-radius:50%;background:var(--ring);color:var(--ring-fg);cursor:pointer;transition:opacity .25s,transform .3s var(--ease),background-color .25s,filter .2s}
+.send:disabled{background:var(--muted);color:var(--muted-foreground);cursor:default;opacity:.5;transform:scale(.9)}
+.send:not(:disabled):hover{transform:translateY(-1px) scale(1.05);filter:brightness(1.1)}
+.send:not(:disabled):active{transform:scale(.93)}
+.send svg{transition:transform .3s var(--ease)}
+.send:not(:disabled):hover svg{transform:translateY(-1px)}
+
