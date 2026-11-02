@@ -18,7 +18,7 @@ function openLnk(i,j){
   $("#dt").textContent="Modifier le lien";
   $("#di").hidden=true;$("#du").hidden=$("#dki").hidden=false;$("#dv").required=true;$("#dn").required=false;$("#dnf").hidden=false;
   $("#df").reset();$("#dp").hidden=true;
-  $("#dn").value=D[i].l[j][0];$("#dv").value=D[i].l[j][1];$("#dk").value=D[i].l[j][3]||"";prev();
+  $("#dn").value=D[i].l[j].n;$("#dv").value=D[i].l[j].u;$("#dk").value=D[i].l[j].k||"";prev();
   $("#dlg").showModal();$("#dn").focus();
 }
 function openDlg(g){
@@ -53,7 +53,7 @@ $("#df").onsubmit=e=>{
     if(!n)n=nameOf(v);
   }
   if(egi>=0){D[egi].n=n;D[egi].i=pick}
-  else if(tgt===null)D.push({n,i:pick,l:[]});else{const k=norm($("#dk").value),l=$("#dk").value.trim()&&ok(k)?[n,v,0,k]:[n,v];if(el>=0)D[tgt].l[el]=l;else D[tgt].l.push(l)}
+  else if(tgt===null)D.push({n,i:pick,l:[]});else{const k=norm($("#dk").value),l=$("#dk").value.trim()&&ok(k)?{n,u:v,k}:{n,u:v};if(el>=0)D[tgt].l[el]=l;else D[tgt].l.push(l)}
   saveD();
 };
 // ferme seulement si le clic commence ET finit sur le fond (une selection de texte relachee dehors ne ferme plus)

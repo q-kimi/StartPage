@@ -12,7 +12,7 @@ $("#list").ondragstart=e=>{
   const r=e.target.closest(".r,.sp");
   if(!edit||!r)return e.preventDefault();
   drag={i:+r.dataset.i,j:+r.dataset.j};
-  e.dataTransfer.effectAllowed="move";e.dataTransfer.setData("text/plain",r.href||"");
+  e.dataTransfer.effectAllowed="move";e.dataTransfer.setData("text/plain",r.querySelector("a")?hr(r):"");
   requestAnimationFrame(()=>r.classList.add("drag"));
 };
 $("#list").ondragover=e=>{
@@ -28,7 +28,7 @@ $("#list").ondragover=e=>{
   if(!drag||!sec)return;
   const ti=+sec.dataset.g,r=e.target.closest(".r,.sp");
   dClear();
-  if(ti!==drag.i&&nl(D[ti])>=MAX&&D[drag.i].l[drag.j][1]!=="---"){drop=null;sec.classList.add("full");e.dataTransfer.dropEffect="none";return}
+  if(ti!==drag.i&&(D[ti].l.length>=MAX*2||(nl(D[ti])>=MAX&&!D[drag.i].l[drag.j].sep))){drop=null;sec.classList.add("full");e.dataTransfer.dropEffect="none";return}
   e.preventDefault();e.dataTransfer.dropEffect="move";
   sec.classList.add("over");
   let idx=D[ti].l.length;
@@ -62,7 +62,7 @@ $("#ed").onclick=()=>{
   edit=document.body.classList.toggle("edit");
   document.querySelectorAll("#list .r,#list .sp,#list h2").forEach(r=>r.draggable=edit);
   $("#ed").classList.toggle("on",edit);
-  if(!edit){D=D.filter(g=>!g.z);D.forEach(g=>g.l=g.l.filter(l=>!l[2]));persist();render()}
+  if(!edit){D=D.filter(g=>!g.z);D.forEach(g=>g.l=g.l.filter(l=>!l.x));persist();render()}
   $("#ed").innerHTML=(edit?OK:PEN)+`<span>${edit?"Terminer":"Modifier"}</span>`;
   document.querySelectorAll(".add").forEach(b=>b.tabIndex=edit?0:-1);
 };

@@ -3,7 +3,10 @@
 #list{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,250px));justify-content:center;gap:8px 28px;align-items:start}
 section{margin-bottom:12px}
 h2{position:relative;display:flex;align-items:center;height:28px;padding:0 8px;font-size:12px;font-weight:500;letter-spacing:.04em;text-transform:uppercase;color:var(--muted-foreground)}
-.r{position:relative;display:flex;align-items:center;gap:12px;height:var(--rh);padding:0 8px;border-radius:6px;color:var(--foreground);text-decoration:none;transition:background-color .15s,transform .2s var(--ease),opacity .25s}
+.r{position:relative;display:flex;align-items:center;height:var(--rh);border-radius:6px;color:var(--foreground);transition:background-color .15s,transform .2s var(--ease),opacity .25s}
+.r a{display:flex;align-items:center;gap:12px;flex:1;min-width:0;height:100%;padding:0 8px;border-radius:6px;color:inherit;text-decoration:none}
+.r a:focus-visible{outline-offset:-2px}
+.edit .r a{cursor:grab}
 .r:hover,.r.hit{background:var(--accent)}
 .r:active{transform:scale(.985)}
 .r.hit{box-shadow:inset 2px 0 0 var(--ring)}
@@ -17,8 +20,8 @@ h2{position:relative;display:flex;align-items:center;height:28px;padding:0 8px;f
 #list.q .r.dim{opacity:.35}
 
 /* edit */
-.ib{position:absolute;right:4px;top:50%;display:grid;place-items:center;width:24px;height:24px;border:0;border-radius:5px;background:none;color:var(--muted-foreground);cursor:pointer;opacity:0;transform:translateY(-50%) scale(.6);pointer-events:none;transition:opacity .2s,transform .3s var(--ease),background-color .15s,color .15s}
-.edit .ib{opacity:1;transform:translateY(-50%);pointer-events:auto}
+.ib{position:absolute;right:4px;top:50%;display:grid;place-items:center;width:24px;height:24px;border:0;border-radius:5px;background:none;color:var(--muted-foreground);cursor:pointer;opacity:0;transform:translateY(-50%) scale(.6);pointer-events:none;visibility:hidden;transition:opacity .2s,transform .3s var(--ease),background-color .15s,color .15s,visibility 0s .3s}
+.edit .ib{opacity:1;transform:translateY(-50%);pointer-events:auto;visibility:visible;transition-delay:0s}
 .ib:hover{background:var(--muted);color:var(--destructive)}
 .add{display:flex;align-items:center;gap:8px;width:100%;height:0;padding:0 8px;border:0;border-radius:6px;background:none;color:var(--muted-foreground);font-size:14px;cursor:pointer;overflow:hidden;opacity:0;pointer-events:none;transition:height .35s var(--ease),opacity .25s,background-color .15s,color .15s}
 .edit .add{height:32px;opacity:1;pointer-events:auto}
@@ -37,8 +40,9 @@ h2 span{flex:1}
 .ipk svg{width:18px;height:18px}
 h2{cursor:pointer;user-select:none;transition:color .2s}
 h2:hover{color:var(--foreground)}
-h2>svg{width:16px;height:16px;margin-right:4px;margin-left:-4px;transition:transform .45s var(--ease)}
-section.col h2>svg{transform:rotate(-90deg)}
+.ht{flex:1;min-width:0;display:flex;align-items:center;height:100%;padding:0;border:0;background:none;color:inherit;font:inherit;letter-spacing:inherit;text-transform:inherit;text-align:left;cursor:inherit}
+.ht>svg{width:16px;height:16px;margin-right:4px;margin-left:-4px;transition:transform .45s var(--ease)}
+section.col .ht>svg{transform:rotate(-90deg)}
 .gb{display:grid;grid-template-rows:1fr;transition:grid-template-rows .55s cubic-bezier(.32,.72,0,1)}
 .gi{min-height:0;overflow:hidden;transition:opacity .4s .08s,visibility 0s}
 .gi .r{transition:background-color .15s,color .15s,height .35s var(--ease),opacity .4s calc(var(--j,0)*30ms + .1s),transform .55s calc(var(--j,0)*30ms + .05s) var(--ease)}

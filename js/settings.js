@@ -6,9 +6,10 @@ function apply(){
   $("#greet").hidden=!S.greet;
 }
 function set(k,v){
-  S[k]=v;store("sps",S);apply();
+  S[k]=v;saveS();apply();
   if(k==="name")tick();
   if(k==="tab")render();
+  if(k==="hist"){if(!v)store("spr",[]);recRender()}
   if(k==="eng"){place();ping()}
 }
 
@@ -22,13 +23,14 @@ function sheet(){
   <h4>Recherche</h4>
   <div class="row col"><div class="l">Moteur par défaut</div>${seg("eng",S.ord.map(i=>[i,E[i][0],S.hid.includes(i)]))}</div>
   <h4>Moteurs et IA</h4>
-  <p class="note">Glisse les moteurs sous la barre de recherche pour les réordonner.</p>
-  ${S.ord.map(i=>`<div class="row"><div class="eg"><img src="${fd(E[i][2])}" data-d="${E[i][2]}" width="18" height="18" alt=""><span class="l">${esc(E[i][0])}</span></div><div class="eg">${i>=NB?`<button class="mini" data-del="${i}">Supprimer</button>`:""}<button class="sw" role="switch" aria-checked="${!S.hid.includes(i)}" data-hid="${i}" aria-label="${esc(E[i][0])}"></button></div></div>`).join("")}
+  <p class="note">Glisse les moteurs sous la barre de recherche pour les réordonner, ou utilise Alt+Gauche/Droite sur un moteur. En mode Modifier, Alt+Haut/Bas déplace le groupe ou le favori sélectionné.</p>
+  ${S.ord.map(i=>`<div class="row"><div class="eg"><img src="${esc(fd(E[i][2]))}" data-d="${esc(E[i][2])}" width="18" height="18" alt=""><span class="l">${esc(E[i][0])}</span></div><div class="eg">${i>=NB?`<button class="mini" data-del="${i}">Supprimer</button>`:""}<button class="sw" role="switch" aria-checked="${!S.hid.includes(i)}" data-hid="${i}" aria-label="${esc(E[i][0])}"></button></div></div>`).join("")}
   <div class="row col"><div class="l">Ajouter un moteur</div><input class="inp" id="en" placeholder="Nom" maxlength="20" autocomplete="off"><input class="inp" id="eu" placeholder="https://exemple.com/search?q=%s" autocomplete="off"><button class="btn" id="ea">Ajouter</button></div>
   ${sw("tab","Nouvel onglet","Ouvre les favoris et les recherches dans un nouvel onglet.")}
+  ${sw("hist","Recherches récentes","Garde les 5 dernières recherches sur cet appareil.")}
   <h4>Apparence</h4>
   <div class="row col"><div class="l">Densité des favoris</div>${seg("dense",[[false,"Confort"],[true,"Compact"]])}</div>
-  ${sw("favs","Icônes des sites")}${sw("anim","Animations")}
+  ${sw("favs","Icônes des sites")}${sw("priv","Icônes via Google seulement","Ne contacte pas chaque site pour trouver son icône (moins de requêtes, icônes moins précises).")}${sw("anim","Animations")}
   <h4>Données</h4>
   <div class="btns"><button class="btn" id="ex">Exporter</button><button class="btn" id="im">Importer</button><button class="btn" id="ri">Recharger les icônes</button><button class="btn" id="rd">Favoris par défaut</button><button class="btn danger" id="rs">Réinitialiser</button></div>
   <input type="file" id="fi" accept="application/json" hidden>
@@ -55,13 +57,14 @@ $("#sbody").onclick=e=>{
     const n=$("#en").value.trim().slice(0,20),u=$("#eu").value.trim();
     if(!n||!ok(u))return toast("Nom et URL https requis");
     if(S.ce.length>=12)return toast("12 moteurs perso max");
+    if(S.ce.some(c=>c[1]===u))return toast("Moteur déjà ajouté");
     let h=0;for(const c of n)h=(h*31+c.charCodeAt(0))%360;
     const c=[n,u,host(u),"Rechercher avec "+n,"hsl("+h+" 70% 60%)"];
     S.ce.push(c);E.push(c);engSave();toast("Moteur ajouté");
   }
   else if(t.id==="ex"){
     const a=document.createElement("a");
-    a.href=URL.createObjectURL(new Blob([JSON.stringify({favoris:live(),reglages:S},null,2)],{type:"application/json"}));
+    a.href=URL.createObjectURL(new Blob([JSON.stringify({favoris:live(),reglages:ser()},null,2)],{type:"application/json"}));
     a.download="start-page.json";a.click();URL.revokeObjectURL(a.href);toast("Export terminé");
   }
   else if(t.id==="im")$("#fi").click();
@@ -70,10 +73,10 @@ $("#sbody").onclick=e=>{
     (window.caches?caches.delete("icons-v1"):Promise.resolve()).catch(()=>{}).then(()=>{render();recRender();chips();sheet();toast("Icônes rechargées")});
   }
   else if(t.id==="rd"){
-    JSON.parse(JSON.stringify(DEF)).forEach(dg=>{
+    clean(DEF).forEach(dg=>{
       const g=D.find(x=>!x.z&&x.n===dg.n);
       if(!g)return D.push(dg);
-      dg.l.forEach(l=>{if(nl(g)<MAX&&!g.l.some(x=>!x[2]&&x[1]===l[1]))g.l.push(l)});
+      dg.l.forEach(l=>{if(nl(g)<MAX&&!g.l.some(x=>!x.x&&x.u===l.u))g.l.push(l)});
     });
     saveD();toast("Favoris par défaut restaurés");
   }
@@ -81,7 +84,7 @@ $("#sbody").onclick=e=>{
     if(!t.classList.contains("armed")){
       t.classList.add("armed");t.textContent="Confirmer ?";
       setTimeout(()=>{t.classList.remove("armed");t.textContent="Réinitialiser"},3000);
-    }else{try{localStorage.removeItem("sp");localStorage.removeItem("sps");localStorage.removeItem("spe");localStorage.removeItem("spr")}catch{}location.reload()}
+    }else{try{for(const k of["sp","sps","spe","spr","spi","spm"])localStorage.removeItem(k)}catch{}location.reload()}
   }
 };
 $("#sbody").oninput=e=>{if(e.target.id==="sn")set("name",e.target.value.trim())};
@@ -90,9 +93,9 @@ $("#sbody").onchange=async e=>{
   try{
     const j=JSON.parse(await e.target.files[0].text()),d=clean(j.favoris);
     if(!d)throw 0;
-    D=d;if(j.reglages&&typeof j.reglages==="object")S={...SD,...j.reglages};
+    D=d;if(j.reglages&&typeof j.reglages==="object")S=thaw({...SD,...pickS(j.reglages)});
     engInit();chips();
-    persist();store("sps",S);apply();place();tick();render();sheet();toast("Import terminé");
+    persist();saveS();apply();place();tick();render();sheet();toast("Import terminé");
   }catch{toast("Fichier invalide")}
 };
 $("#st").innerHTML=GEAR;

@@ -2,12 +2,12 @@
 h1{min-height:1.2em;font:400 clamp(30px,5vw,44px)/1.2 Georgia,"Times New Roman",serif;letter-spacing:-.01em;text-align:center}
 
 /* composer */
-.composer{position:relative;isolation:isolate;max-width:720px;margin:36px auto 56px;padding:18px 14px 12px 20px;border:1px solid var(--input);border-radius:22px;box-shadow:0 2px 8px #0008;cursor:text;transition:border-color .5s,box-shadow .6s var(--ease),transform .5s var(--ease)}
+.composer{position:relative;isolation:isolate;max-width:720px;margin:36px auto 56px;padding:18px 14px 12px 20px;border:1px solid var(--input);border-radius:22px;box-shadow:0 2px 8px #0008;cursor:text;transition:border-color .7s var(--ease),box-shadow .9s var(--ease),transform .7s var(--ease)}
 .composer::after{content:"";position:absolute;inset:0;z-index:-1;border-radius:inherit;background:var(--card)}
-.composer::before{content:"";position:absolute;inset:-1px;z-index:-2;border-radius:inherit;pointer-events:none;opacity:0;filter:blur(18px);will-change:opacity;background:conic-gradient(from var(--a),transparent 0turn,var(--g1) .12turn,var(--g2) .3turn,transparent .5turn,var(--g3) .62turn,var(--g4) .8turn,transparent 1turn);transition:opacity .8s var(--ease);animation:sweep 7s linear infinite paused}
-.composer:focus-within::before{opacity:.6;animation-play-state:running}
+.composer::before{content:"";position:absolute;inset:-1px;z-index:-2;border-radius:inherit;pointer-events:none;opacity:0;filter:blur(16px) saturate(1.25);will-change:opacity;background:conic-gradient(from var(--a),transparent 0turn,var(--g1) .12turn,var(--g2) .3turn,transparent .5turn,var(--g3) .62turn,var(--g4) .8turn,transparent 1turn);transition:opacity 1.2s var(--ease);animation:sweep 14s linear infinite paused}
+.composer:focus-within::before{opacity:.55;animation-play-state:running}
 @keyframes sweep{to{--a:360deg}}
-.composer:focus-within{border-color:color-mix(in srgb,var(--eng) 50%,#3f3f46);box-shadow:0 2px 8px #0008,0 0 0 1px color-mix(in srgb,var(--eng) 25%,transparent),0 18px 60px color-mix(in srgb,var(--eng) 14%,transparent);transform:translateY(-1px)}
+.composer:focus-within{border-color:color-mix(in srgb,var(--eng) 50%,#3f3f46);box-shadow:0 2px 8px #0008,0 0 0 1px color-mix(in srgb,var(--eng) 25%,transparent),0 10px 30px color-mix(in srgb,var(--eng) 10%,transparent);transform:translateY(-1px)}
 .composer.ping{animation:ping .9s var(--ease)}
 #q{display:block;width:100%;min-height:52px;max-height:160px;padding:0;resize:none;background:none;border:0;outline:0;font-size:16px;line-height:1.6;overflow-y:auto}
 #q::placeholder{color:var(--muted-foreground);transition:opacity .2s}

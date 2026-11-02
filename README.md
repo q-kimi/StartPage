@@ -7,7 +7,10 @@ Page de démarrage personnelle (thème OLED noir) : barre de recherche multi-mot
 ```
 index.html            squelette HTML, charge css/ et js/
 manifest.webmanifest  PWA
-sw.js                 service worker (cache hors ligne des icônes)
+sw.js                 service worker (coquille hors ligne, cache des icônes)
+nginx.conf, security.conf, Dockerfile   deploiement (en-têtes de sécurité)
+tests/                tests node:test (état, migration, syntaxe)
+.github/workflows/    CI (npm test + build)
 icons/                icônes de l'application
 css/
   base.css            variables, reset, mise en page
@@ -37,7 +40,8 @@ build.js              assemble dist/ (un seul index.html autonome)
 
 ```
 npm start        serveur local sur http://127.0.0.1:8765
-npm run build    génère dist/ (index.html autonome, sw, manifest, icônes)
+npm run build    génère dist/ (index.html autonome avec CSP par hash, sw, manifest, icônes)
+npm test         tests (Node >= 22)
 ```
 
 Le service worker et le manifeste exigent `http://` ou `https://` (pas `file://`). `dist/index.html` fonctionne en ouvrant le fichier directement, sans service worker.
@@ -46,11 +50,20 @@ Le service worker et le manifeste exigent `http://` ou `https://` (pas `file://`
 
 | Clé | Contenu |
 | --- | --- |
-| `sp` | groupes et favoris |
-| `sps` | réglages |
+| `sp` | groupes et favoris (`{n,u,k?}`, séparateur `{sep:1}`) |
+| `sps` | réglages, format v2 (moteurs stockés par id stable) |
 | `spr` | recherches récentes |
 | `spi`, `spm` | cache des icônes (site, Google 7 jours) |
 
 ## Deploiement (Coolify)
 
 `Dockerfile` : build Node (`node build.js`) puis nginx sert `dist/`. Dans Coolify : nouvelle ressource, Dockerfile, port 80, domaine en HTTPS (requis pour le service worker et la PWA). Les donnees restent dans le navigateur de chaque appareil.
+
+
+## Réglages et raccourcis
+
+- `Recherches récentes` (`hist`) : désactive l'historique et l'efface.
+- `Icônes via Google seulement` (`priv`) : pas de requête de favicon vers d'autres services.
+- Mode édition : `Alt+Haut/Bas` réordonne groupes et liens au clavier.
+- Barre de moteurs : `Alt+Gauche/Droite` réordonne le moteur actif.
+- Plusieurs onglets : une modification dans un onglet recharge les autres (sauf édition en cours).

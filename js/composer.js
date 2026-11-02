@@ -1,15 +1,15 @@
 /* composer */
-const chips=()=>{eng.innerHTML=vis().map(i=>`<button type="button" class="chip" data-e="${i}" aria-label="${esc(E[i][0])}"><img src="${fd(E[i][2])}" data-d="${E[i][2]}" width="18" height="18" alt="" draggable="false"><span>${esc(E[i][0])}</span></button>`).join("");fit()};
+const chips=()=>{eng.innerHTML=vis().map(i=>`<button type="button" class="chip" data-e="${i}" aria-label="${esc(E[i][0])}"><img src="${esc(fd(E[i][2]))}" data-d="${esc(E[i][2])}" width="18" height="18" alt="" draggable="false"><span>${esc(E[i][0])}</span></button>`).join("");fit()};
 // le libelle du moteur actif elargit la rangee: si le pire cas depasse la largeur, on le masque
 const fit=()=>{eng.classList.toggle("cp",eng.children.length*38+101>eng.parentNode.clientWidth-$("#send").offsetWidth-8)};
 addEventListener("resize",fit);
 function engSave(){
-  engInit();store("sps",S);chips();place();
+  engInit();saveS();chips();place();
   const b=$("#sbody"),y=b.scrollTop;sheet();b.scrollTop=y;
 }
 function place(){
   eng.querySelectorAll("[data-e]").forEach(x=>x.setAttribute("aria-pressed",+x.dataset.e===S.eng));
-  q.placeholder=E[S.eng][3];
+  q.placeholder=E[S.eng][3];q.setAttribute("aria-label",E[S.eng][3]);
   const e=E[S.eng],c=e[4],R=document.documentElement.style,m=(x,p)=>`color-mix(in srgb,${x} ${p}%,transparent)`,g=e[6]||[c,m(c,0),m(c,65),m(c,0)];
   R.setProperty("--eng",c);g.forEach((x,i)=>R.setProperty("--g"+(i+1),x));
 }
@@ -46,10 +46,21 @@ eng.onpointerdown=e=>{
     if(!on)return;
     c.classList.remove("lift");void c.offsetWidth;c.style.transform="";
     const v=[...eng.children].map(x=>+x.dataset.e);
-    S.ord=v.concat(S.ord.filter(i=>!v.includes(i)));store("sps",S);
+    S.ord=v.concat(S.ord.filter(i=>!v.includes(i)));saveS();
     setTimeout(()=>moved=false);
   };
   addEventListener("pointermove",mv);addEventListener("pointerup",up);addEventListener("pointercancel",up);
+};
+// Alt+Gauche/Droite sur un moteur le deplace
+eng.onkeydown=e=>{
+  const c=e.target.closest(".chip");
+  if(!c||!e.altKey||(e.key!=="ArrowLeft"&&e.key!=="ArrowRight"))return;
+  e.preventDefault();
+  const v=[...eng.children].map(x=>+x.dataset.e),k=v.indexOf(+c.dataset.e),n=k+(e.key==="ArrowRight"?1:-1);
+  if(n<0||n>=v.length)return;
+  [v[k],v[n]]=[v[n],v[k]];
+  S.ord=v.concat(S.ord.filter(i=>!v.includes(i)));saveS();chips();place();
+  eng.querySelector(`[data-e="${v[n]}"]`).focus();
 };
 eng.onclick=e=>{
   if(moved)return;
@@ -71,7 +82,7 @@ function filter(){
 }
 function send(){
   const v=q.value.trim();if(!v)return;
-  const r=rows()[sel];if(r){recAdd(r.querySelector("b").textContent,r.href,host(r.href));return go(r.href)}
+  const r=rows()[sel];if(r){recAdd(r.querySelector("b").textContent,hr(r),host(hr(r)));return go(hr(r))}
   const gr=u=>{try{recAdd(nameOf(u),u,host(u))}catch{}go(u)};
   if(/^https?:\/\//i.test(v))return ok(v)&&gr(v);
   if(/^[^\s/]+\.[a-z]{2,}(\/\S*)?$/i.test(v))return gr("https://"+v);

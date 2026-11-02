@@ -2,9 +2,10 @@ const q=$("#q"),eng=$("#eng");
 let sel=-1,edit=false,tt,toastT;
 const rows=()=>[...document.querySelectorAll("#list section:not(.col) .r:not(.dim)")];
 const go=u=>S.tab?window.open(u,"_blank","noopener"):(location.href=u);
-const nl=g=>g.l.filter(l=>!l[2]&&l[1]!=="---").length;
-const live=()=>D.filter(g=>!g.z).map(g=>({...g,l:g.l.filter(l=>!l[2])}));
-const persist=()=>store("sp",live());
+const hr=r=>r.querySelector("a").href;
+const nl=g=>g.l.filter(l=>!l.x&&!l.sep).length;
+const live=()=>D.filter(g=>!g.z).map(g=>({n:g.n,c:g.c,i:g.i,l:g.l.filter(l=>!l.x)}));
+const persist=()=>{if(!store("sp",live()))toast(FULL)};
 const saveD=()=>{persist();render()};
 
 function toast(m){

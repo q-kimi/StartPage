@@ -13,4 +13,11 @@ const esc=s=>String(s).replace(/[&<>"']/g,c=>"&#"+c.charCodeAt(0)+";");
 const ok=u=>{try{return/^https?:$/.test(new URL(u).protocol)}catch{return false}};
 const host=u=>new URL(u).hostname.replace(/^www\./,"");
 const load=(k,f)=>{try{return JSON.parse(localStorage[k])??f}catch{return f}};
-const store=(k,v)=>{try{localStorage[k]=JSON.stringify(v)}catch{}};
+const FULL="Stockage plein : modifications non enregistrées";
+// ponytail: quota plein -> on sacrifie les caches d'icones (regenerables) puis on retente une fois
+const store=(k,v)=>{
+  const s=JSON.stringify(v);
+  try{localStorage[k]=s;return true}catch{}
+  if(k==="spi"||k==="spm")return false;
+  try{localStorage.removeItem("spi");localStorage.removeItem("spm");localStorage[k]=s;return true}catch{return false}
+};

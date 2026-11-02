@@ -23,4 +23,4 @@ const E=[["Google","https://www.google.com/search?q=","google.com","Rechercher a
  ["YouTube","https://www.youtube.com/results?search_query=","youtube.com","Rechercher sur YouTube","#ff3333"],
  ["Wikipédia","https://fr.wikipedia.org/w/index.php?search=","wikipedia.org","Rechercher sur Wikipédia","#e4e4e7"]];
 const NB=E.length;
-const SD={name:"",greet:true,eng:0,tab:false,ord:[],hid:[],ce:[],dense:false,favs:true,anim:true};
+const SD={name:"",greet:true,eng:0,tab:false,ord:[],hid:[],ce:[],dense:false,favs:true,anim:true,hist:true,priv:false};

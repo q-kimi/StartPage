@@ -3,8 +3,12 @@
   "version": "1.0.0",
   "private": true,
   "description": "Page d'accueil personnelle : recherche, moteurs, favoris groupes, PWA",
+  "engines": {
+    "node": ">=22"
+  },
   "scripts": {
-    "start": "npx http-server . -a 127.0.0.1 -p 8765 -c-1 --silent",
-    "build": "node build.js"
+    "start": "npx http-server@14.1.1 . -a 127.0.0.1 -p 8765 -c-1 --silent",
+    "build": "node build.js",
+    "test": "node --test \"tests/*.test.js\""
   }
 }

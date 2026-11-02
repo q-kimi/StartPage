@@ -2,10 +2,11 @@
 apply();render();tick();chips();place();
 // tactile: pas de clavier force au chargement
 if(matchMedia("(pointer:coarse)").matches)q.blur();
-// "/" place le curseur dans la barre de recherche
-document.addEventListener("keydown",e=>{
-  if(e.key!=="/"||e.ctrlKey||e.metaKey||e.altKey||/^(INPUT|TEXTAREA)$/.test(document.activeElement.tagName)||document.querySelector("dialog[open]"))return;
-  e.preventDefault();q.focus();
+// autre onglet: les donnees ont change. On recharge, sauf en cours d'edition (sinon on ecraserait ses changements)
+addEventListener("storage",e=>{
+  if(e.key&&e.key!=="sp"&&e.key!=="sps")return;
+  if(edit||document.querySelector("dialog[open]"))toast("Modifié dans un autre onglet : recharge la page");
+  else location.reload();
 });
 if("serviceWorker" in navigator)navigator.serviceWorker.register("sw.js").catch(()=>{});
 if(!typing)$("#gn").classList.add("hl");

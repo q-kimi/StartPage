@@ -35,7 +35,7 @@
   <h1 id="greet"><span id="gt"></span><button type="button" id="gn" class="nm"></button></h1>
 
   <div class="composer" id="cp">
-    <textarea id="q" rows="1" autocomplete="off" spellcheck="false" autofocus></textarea>
+    <textarea id="q" rows="1" aria-label="Rechercher" autocomplete="off" spellcheck="false" autofocus></textarea>
     <div class="tools">
       <div id="eng"></div>
       <button class="send" id="send" type="button" disabled aria-label="Envoyer"></button>
@@ -55,7 +55,7 @@
   <button class="dk icon" id="st" aria-label="Paramètres"></button>
 </div>
 
-<dialog class="modal" id="dlg">
+<dialog class="modal" id="dlg" aria-labelledby="dt">
   <form id="df" method="dialog">
     <h3 id="dt"></h3>
     <label class="field">Nom<span id="dnf" class="opt" hidden> (facultatif)</span><input class="inp" id="dn" required autocomplete="off"></label>
@@ -66,9 +66,9 @@
   </form>
 </dialog>
 
-<dialog class="sheet" id="sheet">
+<dialog class="sheet" id="sheet" aria-labelledby="sht">
   <header>
-    <div><h3>Paramètres</h3><p>Personnalise ta page de démarrage.</p></div>
+    <div><h3 id="sht">Paramètres</h3><p>Personnalise ta page de démarrage.</p></div>
     <button class="x" id="sx" aria-label="Fermer"></button>
   </header>
   <div id="sbody"></div>
