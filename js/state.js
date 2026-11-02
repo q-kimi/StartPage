@@ -4,7 +4,7 @@ const cl=l=>{
   if(Array.isArray(l))l=l[1]==="---"?{sep:1}:{n:l[0],u:l[1],k:l[3]};
   if(!l||typeof l!=="object")return null;
   if(l.sep)return{sep:1};
-  if(typeof l.n!=="string"||!ok(l.u))return null;
+  if(typeof l.n!=="string"||!okL(l.u))return null;
   return ok(l.k)?{n:l.n,u:l.u,k:l.k}:{n:l.n,u:l.u};
 };
 const clean=d=>Array.isArray(d)?d.filter(g=>g&&typeof g.n==="string"&&Array.isArray(g.l)).map(g=>({n:g.n,c:!!g.c,i:typeof g.i==="string"&&ICONS[g.i]?g.i:"",l:g.l.map(cl).filter(Boolean).slice(0,MAX*2)})):null;

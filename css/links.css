@@ -17,6 +17,8 @@ h2{position:relative;display:flex;align-items:center;height:28px;padding:0 8px;f
 .r small{flex-shrink:100;margin-left:auto;min-width:0;max-width:50%;color:var(--muted-foreground);font-size:12px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;opacity:0;transform:translateX(-4px);transition:opacity .2s,transform .3s var(--ease)}
 .r:hover small,.r.hit small{opacity:1;transform:none}
 .edit .r small{opacity:0}
+.r.app small{opacity:1;transform:none;margin-left:auto;padding:1px 8px;border:1px solid var(--border);border-radius:99px;font-size:11px;line-height:16px}
+.edit .r.app small{opacity:0}
 #list.q .r.dim{opacity:.35}
 
 /* edit */

@@ -11,7 +11,12 @@ const GEAR=ic("M19.14 12.94c.04-.3.06-.61.06-.94c0-.32-.02-.64-.07-.94l2.03-1.58
 
 const esc=s=>String(s).replace(/[&<>"']/g,c=>"&#"+c.charCodeAt(0)+";");
 const ok=u=>{try{return/^https?:$/.test(new URL(u).protocol)}catch{return false}};
-const host=u=>new URL(u).hostname.replace(/^www\./,"");
+// liens d'applications: protocole -> [domaine de l'icone, nom affiche, lien par defaut]
+const APPS=new Map([["steam",["steampowered.com","Steam","steam://open/main"]],["discord",["discord.com","Discord","discord://"]],["spotify",["spotify.com","Spotify","spotify:"]],["vscode",["visualstudio.com","VS Code","vscode://"]]]);
+const ap=u=>{try{return APPS.get(new URL(u).protocol.slice(0,-1))}catch{}};
+const okL=u=>ok(u)||!!ap(u);
+const hn=u=>ap(u)?ap(u)[0]:new URL(u).hostname;
+const host=u=>ap(u)?ap(u)[1]:new URL(u).hostname.replace(/^www\./,"");
 const load=(k,f)=>{try{return JSON.parse(localStorage[k])??f}catch{return f}};
 const FULL="Stockage plein : modifications non enregistrées";
 // ponytail: quota plein -> on sacrifie les caches d'icones (regenerables) puis on retente une fois

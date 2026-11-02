@@ -31,7 +31,7 @@ const LINE=ic("M4 11h16v2H4z");
 const spH=(i,j)=>'<div class="sp" draggable="'+edit+'" data-i="'+i+'" data-j="'+j+'"><i></i><button class="ib" data-dl="'+i+':'+j+'" aria-label="Supprimer la séparation">'+X+'</button></div>';
 const ugH=(l,i,j)=>`<button class="ug" style="--j:${j}" data-ul="${i}:${j}">${UNDO}<span>Annuler : ${esc(l.n)}</span></button>`;
 // le bouton supprimer est frere du lien (pas de bouton dans un <a>)
-const lkH=(l,i,j)=>`<div class="r" style="--j:${j}" draggable="${edit}" data-i="${i}" data-j="${j}" data-s="${esc((l.n+" "+l.u).toLowerCase())}"><a href="${esc(l.u)}"${S.tab?' target="_blank" rel="noopener"':""} draggable="false"><img ${ia(l)} data-d="${new URL(l.u).hostname}" width="16" height="16" alt="" decoding="async"><b>${esc(l.n)}</b><small>${esc(host(l.u))}</small></a><button class="ib" data-dl="${i}:${j}" aria-label="Supprimer ${esc(l.n)}">${X}</button></div>`;
+const lkH=(l,i,j)=>`<div class="r${ap(l.u)?" app":""}" style="--j:${j}" draggable="${edit}" data-i="${i}" data-j="${j}" data-s="${esc((l.n+" "+l.u).toLowerCase())}"><a href="${esc(l.u)}"${S.tab&&!ap(l.u)?' target="_blank" rel="noopener"':""} draggable="false"><img ${ia(l)} data-d="${hn(l.u)}" width="16" height="16" alt="" decoding="async"><b>${esc(l.n)}</b><small>${esc(host(l.u))}</small></a><button class="ib" data-dl="${i}:${j}" aria-label="Supprimer ${esc(l.n)}">${X}</button></div>`;
 // suppression / annulation d'un favori sur place: pas de re-rendu complet, pas de saut de mise en page
 function swapLink(el,html,g){
   const t=document.createElement("template");t.innerHTML=html;
@@ -74,7 +74,7 @@ $("#list").onclick=e=>{
   if(t.tagName==="A"){
     const r=t.closest(".r");
     if(edit){e.preventDefault();openLnk(+r.dataset.i,+r.dataset.j)}
-    else recAdd(t.querySelector("b").textContent,t.href,host(t.href));
+    else if(!ap(t.href))recAdd(t.querySelector("b").textContent,t.href,host(t.href));
     return;
   }
   if(d.dg!==undefined){e.preventDefault();out(t.closest("section"),()=>{D[d.dg].z=1;saveD()})}

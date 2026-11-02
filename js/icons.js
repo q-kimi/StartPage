@@ -16,7 +16,7 @@ const fav=u=>fd(new URL(u).hostname);
 const PH="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7";
 let IC=load("spi",{}),MEM=load("spm",{});const pend={};
 const got=d=>FI[d]||IC[d]||(MEM[d]&&Date.now()-MEM[d][1]<6048e5?MEM[d][0]:"");
-const ia=l=>{if(l.k)return`src="${esc(l.k)}" data-n="-1"`;const h=new URL(l.u).hostname;HU[h]=l.u;const u=got(h);return u?`src="${esc(u)}"`:`src="${PH}" class="ld"`};
+const ia=l=>{if(l.k)return`src="${esc(l.k)}" data-n="-1"`;const h=hn(l.u);if(!ap(l.u))HU[h]=l.u;const u=got(h);return u?`src="${esc(u)}"`:`src="${PH}" class="ld"`};
 const setIc=(d,u)=>document.querySelectorAll('img.ld[data-d="'+CSS.escape(d)+'"]').forEach(i=>{i.classList.remove("ld");i.dataset.n=99;if(u){i.src=u;i.classList.add("ic-in")}else i.style.visibility="hidden"});
 // caches d'icones bornes: on oublie les plus anciennes entrees
 const cap=o=>{const k=Object.keys(o);k.slice(0,Math.max(0,k.length-300)).forEach(x=>delete o[x])};

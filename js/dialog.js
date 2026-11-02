@@ -16,7 +16,7 @@ function openGrp(i){
 function openLnk(i,j){
   tgt=i;egi=-1;el=j;pick="";
   $("#dt").textContent="Modifier le lien";
-  $("#di").hidden=true;$("#du").hidden=$("#dki").hidden=false;$("#dv").required=true;$("#dn").required=false;$("#dnf").hidden=false;
+  $("#di").hidden=true;$("#du").hidden=false;$("#dki").hidden=false;$("#dv").required=true;$("#dn").required=false;$("#dnf").hidden=false;
   $("#df").reset();$("#dp").hidden=true;
   $("#dn").value=D[i].l[j].n;$("#dv").value=D[i].l[j].u;$("#dk").value=D[i].l[j].k||"";prev();
   $("#dlg").showModal();$("#dn").focus();
@@ -25,20 +25,20 @@ function openDlg(g){
   if(g!==null&&nl(D[g])>=MAX)return toast("Groupe complet ("+MAX+" liens max)");
   tgt=g;egi=-1;el=-1;pick="";markPick();const isG=g===null;$("#di").hidden=!isG;
   $("#dt").textContent=isG?"Nouveau groupe":"Nouveau lien - "+D[g].n;
-  $("#du").hidden=$("#dki").hidden=isG;$("#dv").required=!isG;$("#dn").required=isG;$("#dnf").hidden=isG;
+  $("#du").hidden=isG;$("#dki").hidden=isG;$("#dv").required=!isG;$("#dn").required=isG;$("#dnf").hidden=isG;
   $("#df").reset();$("#dp").hidden=true;$("#dlg").showModal();$("#dn").focus();
 }
 let pt;
-const norm=v=>{v=v.trim();return /^https?:\/\//i.test(v)?v:"https://"+v.replace(/^\/+/,"")};
-const okUrl=v=>{try{return new URL(v).hostname.includes(".")}catch{return false}};
-const nameOf=v=>{const h=new URL(v).hostname.replace(/^www\./,"").split("."),w=h[h.length-2]||h[0];return w[0].toUpperCase()+w.slice(1)};
+const norm=v=>{v=v.trim();return /^https?:\/\//i.test(v)||ap(v)?v:"https://"+v.replace(/^\/+/,"")};
+const okUrl=v=>{try{return !!ap(v)||new URL(v).hostname.includes(".")}catch{return false}};
+const nameOf=v=>{if(ap(v))return ap(v)[1];const h=new URL(v).hostname.replace(/^www\./,"").split("."),w=h[h.length-2]||h[0];return w[0].toUpperCase()+w.slice(1)};
 let autoN="";
 $("#df").addEventListener("reset",()=>autoN="");
 const prev=()=>{
   const p=$("#dp"),v=norm($("#dv").value);p.hidden=true;
   if(okUrl(v)){
     // nom auto, modifiable: remplace seulement un champ vide ou encore egal au dernier nom auto
-    const n=$("#dn");if(!n.value.trim()||n.value===autoN)n.value=autoN=nameOf(v);const k=norm($("#dk").value);const cu=$("#dk").value.trim()&&ok(k);p.style.visibility="";const d=new URL(v).hostname;HU[d]=v;p.dataset.n=cu?-1:0;p.dataset.d=d;p.classList.remove("ld");
+    const n=$("#dn");if(!n.value.trim()||n.value===autoN)n.value=autoN=nameOf(v);const k=norm($("#dk").value);const cu=$("#dk").value.trim()&&ok(k);p.style.visibility="";const d=hn(v);if(!ap(v))HU[d]=v;p.dataset.n=cu?-1:0;p.dataset.d=d;p.classList.remove("ld");
     if(cu)p.src=k;else if(got(d))p.src=got(d);else{p.classList.add("ld");p.src=PH;probe(d)}}
 };
 $("#dp").onload=e=>e.target.hidden=false;

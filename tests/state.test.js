@@ -99,3 +99,15 @@ test("cleanCe: doublons d'URL et entrees trop courtes retires", () => {
   m.S = m.thaw({ ce: [["A", "https://a.test/?q=", "x", "p", "red"], ["B", "https://a.test/?q=", "x", "p", "red"], ["C", "https://c.test/", "x"]], ord: [], hid: [], eng: 0 });
   assert.equal(m.S.ce.length, 1);
 });
+
+test("clean: liens d'applications autorises, protocoles inconnus refuses", () => {
+  const { clean } = load();
+  const d = clean([{ n: "G", l: [
+    { n: "Steam", u: "steam://open/main" },
+    { n: "Spotify", u: "spotify:track:abc" },
+    { n: "x", u: "javascript:alert(1)" },
+    { n: "y", u: "constructor://a" },
+    { n: "z", u: "file:///C:/a.exe" },
+  ] }]);
+  assert.deepEqual(d[0].l.map((l) => l.n), ["Steam", "Spotify"]);
+});
