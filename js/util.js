@@ -12,7 +12,10 @@ const GEAR=ic("M19.14 12.94c.04-.3.06-.61.06-.94c0-.32-.02-.64-.07-.94l2.03-1.58
 const esc=s=>String(s).replace(/[&<>"']/g,c=>"&#"+c.charCodeAt(0)+";");
 const ok=u=>{try{return/^https?:$/.test(new URL(u).protocol)}catch{return false}};
 // liens d'applications: protocole -> [domaine de l'icone, nom affiche, lien par defaut]
-const APPS=new Map([["steam",["steampowered.com","Steam","steam://open/main"]],["discord",["discord.com","Discord","discord://"]],["spotify",["spotify.com","Spotify","spotify:"]],["vscode",["visualstudio.com","VS Code","vscode://"]]]);
+const APPS=new Map([["steam",["steampowered.com","Steam","steam://open/main"]],["discord",["discord.com","Discord","discord://"]],["spotify",["spotify.com","Spotify","spotify:"]],["vscode",["visualstudio.com","VS Code","vscode://"]],
+ ["slack",["slack.com","Slack","slack://open"]],["notion",["notion.so","Notion","notion://"]],["obsidian",["obsidian.md","Obsidian","obsidian://"]],
+ ["tg",["telegram.org","Telegram","tg://"]],["zoommtg",["zoom.us","Zoom","zoommtg://"]],["msteams",["microsoft.com","Teams","msteams:"]],
+ ["startpage",["microsoft.com","Local","startpage://pick"]]]);
 const ap=u=>{try{return APPS.get(new URL(u).protocol.slice(0,-1))}catch{}};
 const okL=u=>ok(u)||!!ap(u);
 const hn=u=>ap(u)?ap(u)[0]:new URL(u).hostname;

@@ -54,6 +54,7 @@ Le service worker et le manifeste exigent `http://` ou `https://` (pas `file://`
 | `sps` | réglages, format v2 (moteurs stockés par id stable) |
 | `spr` | recherches récentes |
 | `spi`, `spm` | cache des icônes (site, Google 7 jours) |
+| `spu` | nombre de clics par lien |
 
 ## Deploiement (Coolify)
 
@@ -67,3 +68,17 @@ Le service worker et le manifeste exigent `http://` ou `https://` (pas `file://`
 - Mode édition : `Alt+Haut/Bas` réordonne groupes et liens au clavier.
 - Barre de moteurs : `Alt+Gauche/Droite` réordonne le moteur actif.
 - Plusieurs onglets : une modification dans un onglet recharge les autres (sauf édition en cours).
+
+## Apps et .exe locaux
+
+- Apps par protocole (bouton "Ajouter une app") : Steam, Discord, Spotify, VS Code, Slack, Notion, Obsidian, Telegram, Zoom, Teams. Pour en ajouter : la liste `APPS` de `js/util.js`.
+- `.exe` local : une page web ne peut pas lancer un programme. Le dossier `helper/` (Windows, PowerShell 5.1) enregistre le protocole `startpage://` pour ton utilisateur.
+  1. `powershell -ExecutionPolicy Bypass -File helper\install.ps1` (une fois, le dossier `helper/` doit rester en place).
+  2. Dans "Ajouter une app", bouton "Choisir un .exe..." : l'Explorateur s'ouvre, le lien `startpage://run/ID` est rempli.
+  3. Seuls les exe choisis ainsi sont lançables (liste `%APPDATA%\startpage\apps.json`). Un lien ne contient qu'un identifiant, jamais un chemin.
+  - Retrait : `helper\uninstall.ps1`.
+
+## Historique et statistiques
+
+- `Ctrl+Z` annule, `Ctrl+Maj+Z` (ou `Ctrl+Y`) rétablit (50 actions, hors champ de saisie).
+- "Les plus utilisés" (réglage `top`) : compteur de clics par lien dans `spu`, affiche les 5 liens ouverts au moins 2 fois.

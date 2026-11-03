@@ -16,6 +16,20 @@ $("#rec").onclick=e=>{
   if(a.dataset.c==="1")navigator.clipboard?.writeText(a.dataset.n).catch(()=>{});
   recSave(a.dataset.n,a.href,a.dataset.d,a.dataset.c==="1");
 };
+// les plus utilises: compteur de clics par URL (spu), affiche les liens ouverts au moins 2 fois
+const hit=u=>{
+  const m=load("spu",{});m[u]=(m[u]||0)+1;
+  const k=Object.keys(m);if(k.length>200)k.sort((a,b)=>m[a]-m[b]).slice(0,k.length-150).forEach(x=>delete m[x]);
+  store("spu",m);
+};
+function topRender(){
+  const m=S.top?load("spu",{}):{},a=[];
+  D.forEach(g=>{if(!g.z)g.l.forEach(l=>{if(!l.sep&&!l.x&&m[l.u]>=2&&!a.some(x=>x.u===l.u))a.push({n:l.n,u:l.u,c:m[l.u],k:l.k})})});
+  a.sort((x,y)=>y.c-x.c);const t=a.slice(0,5);
+  $("#top").hidden=!t.length;
+  $("#top").innerHTML=t.length?"<span>Les plus utilisés :</span>"+t.map(x=>`<a class="rc" href="${esc(x.u)}"${S.tab&&!ap(x.u)?' target="_blank" rel="noopener"':""} data-u="${esc(x.u)}"><img src="${esc(x.k||fd(hn(x.u)))}" data-d="${esc(hn(x.u))}" alt="" width="14" height="14"><b>${esc(x.n)}</b></a>`).join(""):"";
+}
+$("#top").onclick=e=>{const a=e.target.closest("a");if(a)hit(a.dataset.u)};
 const gk=(()=>{const m=new WeakMap();let n=0;return g=>m.get(g)||(m.set(g,++n),n)})();
 // FLIP: les groupes qui changent de place glissent vers leur nouvelle position
 function flip(pos){
@@ -38,17 +52,17 @@ function swapLink(el,html,g){
   const n=t.content.firstElementChild;el.replaceWith(n);
   const s=n.closest("section"),full=nl(D[g])>=MAX,b=s.querySelector(".add");
   s.querySelector("h2 em").textContent=nl(D[g])+"/"+MAX;
-  b.disabled=full;b.innerHTML=PLUS+(full?"Groupe complet":"Ajouter un lien");
+  s.querySelectorAll("[data-a],[data-ap]").forEach(x=>x.disabled=full);b.innerHTML=PLUS+(full?"Groupe complet":"Ajouter un lien");
   if(S.anim)n.animate([{opacity:0,transform:"translateX(-6px)"},{opacity:1,transform:"none"}],{duration:280,easing:"cubic-bezier(.16,1,.3,1)"});
   filter();
 }
 function render(){
   const pos=new Map();
   document.querySelectorAll("#list section").forEach(s=>pos.set(s.dataset.k,s.getBoundingClientRect()));
-  $("#list").innerHTML=D.map((g,i)=>g.z?`<section class="gz" style="--i:${i}" data-g="${i}" data-k="${gk(g)}"><button class="ug" data-ug="${i}">${UNDO}<span>Annuler : ${esc(g.n)}</span></button></section>`:`<section class="${g.c?"col":""}" style="--i:${i}" data-g="${i}" data-k="${gk(g)}"><h2 data-t="${i}" draggable="${edit}"><button type="button" class="ht" aria-expanded="${!g.c}">${CH}<i class="gic${g.i?" has":""}">${g.i?ic(ICONS[g.i]):PLUS}</i><span>${esc(g.n)}</span><em>${nl(g)}/${MAX}</em></button><button class="ib" data-dg="${i}" aria-label="Supprimer le groupe ${esc(g.n)}">${X}</button></h2><div class="gb"><div class="gi">`+
+  $("#list").innerHTML=D.map((g,i)=>g.z?`<section class="gz" style="--i:${i}" data-g="${i}" data-k="${gk(g)}"><button class="ug" data-ug="${i}">${UNDO}<span>Annuler : ${esc(g.n)}</span></button></section>`:`<section class="${g.c?"col":""}" style="--i:${i}" data-g="${i}" data-k="${gk(g)}"><h2 data-t="${i}" draggable="true"><button type="button" class="ht" aria-expanded="${!g.c}">${CH}<i class="gic${g.i?" has":""}">${g.i?ic(ICONS[g.i]):PLUS}</i><span>${esc(g.n)}</span><em>${nl(g)}/${MAX}</em></button><button class="ib" data-dg="${i}" aria-label="Supprimer le groupe ${esc(g.n)}">${X}</button></h2><div class="gb"><div class="gi">`+
     g.l.map((l,j)=>l.sep?spH(i,j):l.x?ugH(l,i,j):lkH(l,i,j)).join("")+
-    `<button class="add" data-a="${i}" tabindex="${edit?0:-1}"${nl(g)>=MAX?" disabled":""}>${PLUS}${nl(g)>=MAX?"Groupe complet":"Ajouter un lien"}</button><button class="add" data-sp="${i}" tabindex="${edit?0:-1}"${g.l.length>=MAX*2?" disabled":""}>${LINE}Ajouter une séparation</button></div></div></section>`).join("");
-  filter();recRender();flip(pos);warm();
+    `<button class="add" data-a="${i}" tabindex="${edit?0:-1}"${nl(g)>=MAX?" disabled":""}>${PLUS}${nl(g)>=MAX?"Groupe complet":"Ajouter un lien"}</button><button class="add" data-ap="${i}" tabindex="${edit?0:-1}"${nl(g)>=MAX?" disabled":""}>${PLUS}Ajouter une app</button><button class="add" data-sp="${i}" tabindex="${edit?0:-1}"${g.l.length>=MAX*2?" disabled":""}>${LINE}Ajouter une séparation</button></div></div></section>`).join("");
+  filter();recRender();topRender();flip(pos);warm();
 }
 document.addEventListener("error",e=>{
   const i=e.target;if(i.tagName!=="IMG")return;
@@ -74,7 +88,7 @@ $("#list").onclick=e=>{
   if(t.tagName==="A"){
     const r=t.closest(".r");
     if(edit){e.preventDefault();openLnk(+r.dataset.i,+r.dataset.j)}
-    else if(!ap(t.href))recAdd(t.querySelector("b").textContent,t.href,host(t.href));
+    else{hit(D[+r.dataset.i].l[+r.dataset.j].u);if(!ap(t.href))recAdd(t.querySelector("b").textContent,t.href,host(t.href))}
     return;
   }
   if(d.dg!==undefined){e.preventDefault();out(t.closest("section"),()=>{D[d.dg].z=1;saveD()})}
@@ -82,6 +96,7 @@ $("#list").onclick=e=>{
   else if(d.sp!==undefined){D[d.sp].l.push({sep:1});saveD()}
   else if(d.dl!==undefined){e.preventDefault();const[g,l]=d.dl.split(":");out(t.closest(".r"),()=>{D[g].l[l].x=1;persist();swapLink(t.closest(".r"),ugH(D[g].l[l],g,l),g)})}
   else if(d.a!==undefined)openDlg(+d.a);
+  else if(d.ap!==undefined)openDlg(+d.ap,true);
   else if(d.ul!==undefined){
     const[g,l]=d.ul.split(":");
     if(nl(D[g])>=MAX)toast("Groupe complet");else{delete D[g].l[l].x;persist();swapLink(t,lkH(D[g].l[l],g,l),g)}

@@ -43,6 +43,7 @@
   </div>
 
   <div id="rec" hidden></div>
+  <div id="top" hidden></div>
 
   <div class="wrap">
     <div id="list"></div>
@@ -59,7 +60,9 @@
   <form id="df" method="dialog">
     <h3 id="dt"></h3>
     <label class="field"><span>Nom<span id="dnf" class="opt" hidden> (facultatif)</span></span><input class="inp" id="dn" required autocomplete="off"></label>
-    <label class="field" id="du">URL<span class="fw"><input class="inp" id="dv" placeholder="youtube.com ou steam://open/main" inputmode="url" autocomplete="off"><img id="dp" alt="" hidden></span></label>
+    <label class="field" id="du"><span id="dul">URL</span><span class="fw"><input class="inp" id="dv" placeholder="youtube.com" inputmode="url" autocomplete="off"><img id="dp" alt="" hidden></span></label>
+    <p class="hint" id="dh" hidden>Choisis une application, ou colle un lien de lancement (ex. steam://rungameid/730 pour un jeu précis). Pour un .exe local : "Choisir un .exe...".</p>
+    <div class="field" id="dap" role="group" aria-label="Applications" hidden>Applications populaires<div class="apps" id="da"></div></div>
     <label class="field" id="dki"><span>Icône<span class="opt"> (URL d'image, facultatif)</span></span><input class="inp" id="dk" placeholder="https://.../icon.png" inputmode="url" autocomplete="off"></label>
     <div class="field" id="di">Symbole<div class="ipk" id="ip"></div></div>
     <div class="foot"><button class="btn" type="button" id="dc">Annuler</button><button class="btn p">Enregistrer</button></div>

@@ -5,8 +5,10 @@ function dClear(){
 }
 $("#list").ondragstart=e=>{
   const h=e.target.closest("h2");
-  if(h&&edit){
+  if(h){
+    const s=h.parentNode,b=s.getBoundingClientRect();
     drag={g:+h.dataset.t};e.dataTransfer.effectAllowed="move";e.dataTransfer.setData("text/plain","");
+    e.dataTransfer.setDragImage(s,e.clientX-b.left,e.clientY-b.top);
     requestAnimationFrame(()=>h.parentNode.classList.add("gdrag"));return;
   }
   const r=e.target.closest(".r,.sp");
@@ -15,14 +17,18 @@ $("#list").ondragstart=e=>{
   e.dataTransfer.effectAllowed="move";e.dataTransfer.setData("text/plain",r.querySelector("a")?hr(r):"");
   requestAnimationFrame(()=>r.classList.add("drag"));
 };
+// defilement automatique pres des bords de la fenetre pendant un glisser
+const edge=e=>{const m=90,y=e.clientY;if(y<m)scrollBy(0,-Math.ceil((m-y)/6));else if(y>innerHeight-m)scrollBy(0,Math.ceil((y-(innerHeight-m))/6))};
+// section la plus proche du curseur (les ecarts entre groupes ne sont plus des zones mortes)
+const nearest=e=>{let best=null,bd=1/0;document.querySelectorAll("#list section").forEach(s=>{const b=s.getBoundingClientRect(),dx=Math.max(b.left-e.clientX,0,e.clientX-b.right),dy=Math.max(b.top-e.clientY,0,e.clientY-b.bottom),d=dx*dx+dy*dy;if(d<bd){bd=d;best=s}});return best};
 $("#list").ondragover=e=>{
+  edge(e);
   if(drag&&drag.g!==undefined){
-    const sec=e.target.closest("section");if(!sec)return;
+    const sec=e.target.closest("section")||nearest(e);if(!sec)return;
     e.preventDefault();dClear();
     const k=+sec.dataset.g;if(k===drag.g){drop=null;return}
-    const b=sec.getBoundingClientRect(),L=getComputedStyle($("#list")).gridTemplateColumns.split(" ").length>1,
-      a=L?e.clientX>b.left+b.width/2:e.clientY>b.top+b.height/2;
-    sec.classList.add(L?(a?"sr":"sl"):(a?"sb":"st"));drop={k,a};return;
+    const b=sec.getBoundingClientRect(),a=e.clientY>b.top+b.height/2;
+    sec.classList.add(a?"sb":"st");drop={k,a};return;
   }
   const sec=e.target.closest("section");
   if(!drag||!sec)return;
@@ -60,7 +66,7 @@ $("#list").ondragend=dEnd;
 $("#ed").innerHTML=PEN+"<span>Modifier</span>";
 $("#ed").onclick=()=>{
   edit=document.body.classList.toggle("edit");
-  document.querySelectorAll("#list .r,#list .sp,#list h2").forEach(r=>r.draggable=edit);
+  document.querySelectorAll("#list .r,#list .sp").forEach(r=>r.draggable=edit);
   $("#ed").classList.toggle("on",edit);
   if(!edit){D=D.filter(g=>!g.z);D.forEach(g=>g.l=g.l.filter(l=>!l.x));persist();render()}
   $("#ed").innerHTML=(edit?OK:PEN)+`<span>${edit?"Terminer":"Modifier"}</span>`;

@@ -9,6 +9,7 @@ function set(k,v){
   S[k]=v;saveS();apply();
   if(k==="name")tick();
   if(k==="tab")render();
+  if(k==="top")topRender();
   if(k==="hist"){if(!v)store("spr",[]);recRender()}
   if(k==="eng"){place();ping()}
 }
@@ -23,10 +24,11 @@ function sheet(){
   <h4>Recherche</h4>
   <div class="row col"><div class="l">Moteur par défaut</div>${seg("eng",S.ord.map(i=>[i,E[i][0],S.hid.includes(i)]))}</div>
   <h4>Moteurs et IA</h4>
-  <p class="note">Glisse les moteurs sous la barre de recherche pour les réordonner, ou utilise Alt+Gauche/Droite sur un moteur. En mode Modifier, Alt+Haut/Bas déplace le groupe ou le favori sélectionné.</p>
+  <p class="note">Glisse les moteurs sous la barre de recherche pour les réordonner, ou utilise Alt+Gauche/Droite sur un moteur. En mode Modifier, Alt+Haut/Bas déplace le groupe ou le favori sélectionné. Ctrl+Z annule, Ctrl+Maj+Z rétablit.</p>
   ${S.ord.map(i=>`<div class="row"><div class="eg"><img src="${esc(fd(E[i][2]))}" data-d="${esc(E[i][2])}" width="18" height="18" alt=""><span class="l">${esc(E[i][0])}</span></div><div class="eg">${i>=NB?`<button class="mini" data-del="${i}">Supprimer</button>`:""}<button class="sw" role="switch" aria-checked="${!S.hid.includes(i)}" data-hid="${i}" aria-label="${esc(E[i][0])}"></button></div></div>`).join("")}
   <div class="row col"><div class="l">Ajouter un moteur</div><input class="inp" id="en" placeholder="Nom" maxlength="20" autocomplete="off"><input class="inp" id="eu" placeholder="https://exemple.com/search?q=%s" autocomplete="off"><button class="btn" id="ea">Ajouter</button></div>
   ${sw("tab","Nouvel onglet","Ouvre les favoris et les recherches dans un nouvel onglet.")}
+  ${sw("top","Les plus utilisés","Affiche les liens que tu ouvres le plus souvent sous la barre de recherche.")}
   ${sw("hist","Recherches récentes","Garde les 5 dernières recherches sur cet appareil.")}
   <h4>Apparence</h4>
   <div class="row col"><div class="l">Densité des favoris</div>${seg("dense",[[false,"Confort"],[true,"Compact"]])}</div>
@@ -84,7 +86,7 @@ $("#sbody").onclick=e=>{
     if(!t.classList.contains("armed")){
       t.classList.add("armed");t.textContent="Confirmer ?";
       setTimeout(()=>{t.classList.remove("armed");t.textContent="Réinitialiser"},3000);
-    }else{try{for(const k of["sp","sps","spe","spr","spi","spm"])localStorage.removeItem(k)}catch{}location.reload()}
+    }else{try{for(const k of["sp","sps","spe","spr","spi","spm","spu"])localStorage.removeItem(k)}catch{}location.reload()}
   }
 };
 $("#sbody").oninput=e=>{if(e.target.id==="sn")set("name",e.target.value.trim())};

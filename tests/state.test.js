@@ -111,3 +111,15 @@ test("clean: liens d'applications autorises, protocoles inconnus refuses", () =>
   ] }]);
   assert.deepEqual(d[0].l.map((l) => l.n), ["Steam", "Spotify"]);
 });
+
+test("clean: nouvelles apps et liens startpage://run acceptes", () => {
+  const { clean } = load();
+  const d = clean([{ n: "G", l: [
+    { n: "Slack", u: "slack://open" },
+    { n: "Tg", u: "tg://" },
+    { n: "Teams", u: "msteams:" },
+    { n: "Exe", u: "startpage://run/ab12cd34?n=Steam" },
+    { n: "Bad", u: "ftp://x.com/a" },
+  ] }]);
+  assert.deepEqual(d[0].l.map((l) => l.n), ["Slack", "Tg", "Teams", "Exe"]);
+});
