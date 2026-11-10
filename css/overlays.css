@@ -50,3 +50,17 @@ dialog{color:var(--foreground)}
 .apps .chip{height:30px;gap:7px;padding:0 12px 0 10px;border-color:var(--input);background:var(--muted);cursor:pointer}
 .apps .chip img{opacity:1;filter:none;border-radius:4px}
 .apps .chip:hover img{transform:none}
+/* parametres: sections en cartes, raccourcis, boutons de donnees en grille */
+#sbody h4{margin:26px 0 8px 2px}
+.grp{padding:0 14px;border:1px solid var(--border);border-radius:12px;background:#0b0b0d}
+.grp .row:last-child{border-bottom:0}
+.grp .inp{background:var(--background)}
+.kb{min-height:40px;font-size:13px;color:var(--muted-foreground)}
+.kb span:last-child{display:flex;gap:4px;flex:none}
+kbd{display:inline-grid;place-items:center;min-width:22px;height:22px;padding:0 6px;border:1px solid var(--input);border-bottom-width:2px;border-radius:6px;background:var(--muted);color:var(--foreground);font:500 11px/1 ui-monospace,SFMono-Regular,Consolas,monospace;white-space:nowrap}
+.btns{display:grid;grid-template-columns:1fr 1fr;padding-top:0}
+.btns .btn{min-width:0;padding:0 8px;font-size:13px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.btns .danger{grid-column:1/-1}
+.note{margin-top:16px;line-height:1.5}
+.seg button.off{opacity:.4}
+.seg button.off:hover{opacity:.8}

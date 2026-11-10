@@ -1,7 +1,7 @@
 /* favoris */
 .wrap{position:relative}
 #list{columns:210px;column-gap:28px;max-width:806px;margin:0 auto}
-section{margin-bottom:12px;break-inside:avoid}
+section{margin-bottom:22px;break-inside:avoid}
 h2{position:relative;display:flex;align-items:center;height:28px;padding:0 8px;font-size:12px;font-weight:500;letter-spacing:.04em;text-transform:uppercase;color:var(--muted-foreground)}
 .r{position:relative;display:flex;align-items:center;height:var(--rh);border-radius:6px;color:var(--foreground);transition:background-color .15s,transform .2s var(--ease),opacity .25s}
 .r a{display:flex;align-items:center;gap:12px;flex:1;min-width:0;height:100%;padding:0 8px;border-radius:6px;color:inherit;text-decoration:none}
@@ -17,8 +17,6 @@ h2{position:relative;display:flex;align-items:center;height:28px;padding:0 8px;f
 .r small{flex-shrink:100;margin-left:auto;min-width:0;max-width:50%;color:var(--muted-foreground);font-size:12px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;opacity:0;transform:translateX(-4px);transition:opacity .2s,transform .3s var(--ease)}
 .r:hover small,.r.hit small{opacity:1;transform:none}
 .edit .r small{opacity:0}
-.r.app small{opacity:1;transform:none;margin-left:auto;padding:1px 8px;border:1px solid var(--border);border-radius:99px;font-size:11px;line-height:16px}
-.edit .r.app small{opacity:0}
 #list.q .r.dim{opacity:.35}
 
 /* edit */
@@ -60,8 +58,8 @@ h2 em{font-style:normal;font-size:11px;padding-right:28px;opacity:0;transition:o
 .r.drag,.sp.drag{opacity:.35}
 .r.before,.sp.before{box-shadow:0 -2px 0 var(--ring)}
 .r.after,.sp.after{box-shadow:0 2px 0 var(--ring)}
-.sp{position:relative;display:flex;align-items:center;height:12px;padding:0 8px;transition:height .3s var(--ease)}
-.sp i{flex:1;height:1px;margin-right:0;background:var(--border);transition:margin .3s var(--ease)}
+.sp{position:relative;display:flex;align-items:center;height:14px;padding:0 8px 0 36px;transition:height .3s var(--ease)}
+.sp i{flex:1;height:1px;margin-right:0;background:#36363d;transition:margin .3s var(--ease)}
 .edit .sp{height:28px;cursor:grab}
 .edit .sp i{margin-right:30px;background:repeating-linear-gradient(90deg,var(--input) 0 4px,transparent 4px 8px)}
 .sp.out{animation:delr .32s var(--ease) both}
@@ -71,3 +69,15 @@ section.full{outline:1px dashed var(--destructive);outline-offset:4px;background
 
 h2[draggable=true]{cursor:grab}
 h2[draggable=true]:active{cursor:grabbing}
+
+/* edition: actions d ajout groupees sur une ligne, croix discretes */
+.adds{display:flex;gap:6px;transition:margin .35s var(--ease)}
+.edit .adds{margin-top:6px}
+.adds .add{flex:1 1 auto;min-width:0;justify-content:center;gap:5px;width:auto;padding:0 8px;white-space:nowrap;font-size:12.5px;box-shadow:inset 0 0 0 1px transparent}
+.edit .adds .add{height:30px;box-shadow:inset 0 0 0 1px var(--border)}
+.edit .adds .add:hover:not(:disabled){box-shadow:inset 0 0 0 1px var(--input)}
+.adds .add svg{width:14px;height:14px;flex:none}
+.edit .r .ib,.edit .sp .ib{opacity:.35}
+.edit .r:hover .ib,.edit .sp:hover .ib,.edit .ib:focus-visible{opacity:1}
+h2 em{color:var(--muted-foreground);opacity:0}
+.edit h2 em{opacity:.6}

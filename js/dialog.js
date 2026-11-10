@@ -62,11 +62,11 @@ $("#dc").onclick=()=>$("#dlg").close();
 $("#df").onsubmit=e=>{
   let n=$("#dn").value.trim();const v=norm($("#dv").value);
   if(egi<0&&tgt!==null){
-    if(!okUrl(v)){e.preventDefault();return toast(am?"Lien d'app invalide (steam://, discord://, spotify:, vscode://)":ap($("#dv").value.trim())?"Pour une app, utilise Ajouter une app":"URL invalide")}
+    if(!okUrl(v)){e.preventDefault();return toast(am?"Lien d'app invalide (steam://, discord://, spotify:, vscode://)":ap($("#dv").value.trim())?"Pour une app, utilise le bouton App":"URL invalide")}
     if(!n)n=nameOf(v);
   }
   if(egi>=0){D[egi].n=n;D[egi].i=pick}
-  else if(tgt===null)D.push({n,i:pick,l:[]});else{const k=norm($("#dk").value),l=$("#dk").value.trim()&&ok(k)?{n,u:v,k}:{n,u:v};if(el>=0){const o=D[tgt].l[el].u,m=load("spu",{});if(o!==v&&m[o]){m[v]=(m[v]||0)+m[o];delete m[o];store("spu",m)}D[tgt].l[el]=l}else D[tgt].l.push(l)}
+  else if(tgt===null)D.push({n,i:pick,l:[]});else{const k=norm($("#dk").value),l=$("#dk").value.trim()&&ok(k)?{n,u:v,k}:{n,u:v};if(el>=0)D[tgt].l[el]=l;else D[tgt].l.push(l)}
   saveD();
 };
 // ferme seulement si le clic commence ET finit sur le fond (une selection de texte relachee dehors ne ferme plus)

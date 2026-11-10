@@ -38,3 +38,5 @@ h1{min-height:1.2em;font:400 clamp(30px,5vw,44px)/1.2 Georgia,"Times New Roman",
 .send svg{transition:transform .3s var(--ease)}
 .send:not(:disabled):hover svg{transform:translateY(-1px)}
 
+#calc{margin-left:auto;padding:0 4px;color:var(--foreground);font-size:15px;font-variant-numeric:tabular-nums;white-space:nowrap;animation:fade .2s}
+#calc:not([hidden])+.send{margin-left:0}

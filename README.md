@@ -54,7 +54,6 @@ Le service worker et le manifeste exigent `http://` ou `https://` (pas `file://`
 | `sps` | réglages, format v2 (moteurs stockés par id stable) |
 | `spr` | recherches récentes |
 | `spi`, `spm` | cache des icônes (site, Google 7 jours) |
-| `spu` | nombre de clics par lien |
 
 ## Deploiement (Coolify)
 
@@ -81,9 +80,7 @@ Le service worker et le manifeste exigent `http://` ou `https://` (pas `file://`
 ## Historique et statistiques
 
 - `Ctrl+Z` annule, `Ctrl+Maj+Z` (ou `Ctrl+Y`) rétablit (50 actions, hors champ de saisie).
-- "Les plus utilisés" (réglage `top`) : compteur de clics par lien dans `spu`, affiche les 5 liens ouverts au moins 2 fois.
 
 ## Notes
 - Historique Ctrl+Z gardé en sessionStorage (`sph`): survit à un rechargement, pas à la fermeture de l'onglet.
-- Export/import incluent les compteurs "plus utilisés" (`usage`).
 - Helper: la liste `apps.json` est nettoyée des exe supprimés à chaque "Choisir un .exe". `helper\uninstall.ps1 -Purge` supprime aussi la liste.

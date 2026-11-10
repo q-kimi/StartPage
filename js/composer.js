@@ -83,6 +83,7 @@ function filter(){
 function send(){
   const v=q.value.trim();if(!v)return;
   const r=rows()[sel];if(r){recAdd(r.querySelector("b").textContent,hr(r),host(hr(r)));return go(hr(r))}
+  const c=calc(v);if(c!==null){Promise.resolve(navigator.clipboard?.writeText(String(c))).catch(()=>{});q.value=String(c);q.oninput();return toast("Résultat copié")}
   const gr=u=>{try{recAdd(nameOf(u),u,host(u))}catch{}go(u)};
   if(/^https?:\/\//i.test(v))return ok(v)&&gr(v);
   if(/^[^\s/]+\.[a-z]{2,}(\/\S*)?$/i.test(v))return gr("https://"+v);
@@ -94,6 +95,7 @@ function send(){
 q.oninput=()=>{
   q.style.height="auto";q.style.height=Math.min(q.scrollHeight,160)+"px";
   $("#send").disabled=!q.value.trim();filter();
+  const c=calc(q.value),o=$("#calc");o.hidden=c===null;if(c!==null)o.textContent="= "+c.toLocaleString("fr-FR",{maximumFractionDigits:10});
 };
 q.onkeydown=e=>{
   if(e.key==="Escape"){q.value="";q.oninput();q.blur()}
