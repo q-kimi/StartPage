@@ -1,0 +1,61 @@
+/* adaptation aux ecrans: petits telephones, paysage, tablettes, grands ecrans, ultrawide */
+html{-webkit-text-size-adjust:100%;text-size-adjust:100%}
+body{padding-left:max(24px,env(safe-area-inset-left));padding-right:max(24px,env(safe-area-inset-right))}
+@media(max-width:560px){body{padding-left:max(16px,env(safe-area-inset-left));padding-right:max(16px,env(safe-area-inset-right))}}
+.modal{max-height:calc(100dvh - 32px);overflow-y:auto;overscroll-behavior:contain}
+
+/* petits telephones */
+@media(max-width:380px){
+  body{padding:max(24px,env(safe-area-inset-top)) max(12px,env(safe-area-inset-right)) 88px max(12px,env(safe-area-inset-left))}
+  .composer{padding:14px 10px 8px 14px;border-radius:18px}
+  .dk{padding:0 10px}.dk span{display:none}.dk.icon{width:34px}
+  .modal{padding:16px}
+  .ipk{grid-template-columns:repeat(6,1fr)}
+  #sbody{padding:0 16px 24px}.sheet header{padding:20px 16px 8px}
+}
+
+/* paysage bas (telephone couche): peu de hauteur, on rapproche et on utilise la largeur */
+@media(max-height:500px){
+  body{padding-top:max(16px,env(safe-area-inset-top));padding-bottom:72px}
+  h1{font-size:26px}
+  .composer{margin:16px auto 20px}
+  #rec{margin:-8px auto 16px}#top{margin-bottom:16px}
+  #q{min-height:36px}
+}
+@media(max-height:500px) and (max-width:900px){
+  #list{columns:2 210px;max-width:806px}
+}
+
+/* tablettes et petits portables: 3 colonnes (806px) deja par defaut */
+
+/* ecrans larges */
+@media(min-width:1280px){
+  main{max-width:1180px}
+  #list{max-width:1040px}              /* 4 colonnes */
+  .composer,#rec,#top{max-width:760px}
+}
+@media(min-width:1700px){
+  main{max-width:1500px}
+  #list{max-width:1300px}              /* 5 colonnes */
+  .composer,#rec,#top{max-width:820px}
+  body{padding-top:64px}
+}
+/* ultrawide et 4K: on agrandit tout (zoom propre, pas seulement plus de colonnes) */
+@media(min-width:2200px){
+  html{zoom:1.2}
+  #list{max-width:1560px}              /* 6 colonnes */
+}
+@media(min-width:3000px){
+  html{zoom:1.5}
+}
+/* ultrawide 21:9 / 32:9 en hauteur normale: ne pas laisser la page flotter dans le vide */
+@media(min-aspect-ratio:21/9) and (min-width:1700px){
+  main{max-width:1700px}
+  #list{max-width:1560px}
+}
+
+/* ecrans sans souris: les etiquettes de domaine ne dependent pas du survol */
+@media(hover:none){
+  .r small{opacity:.7;transform:none}
+  .edit .r small{opacity:0}
+}

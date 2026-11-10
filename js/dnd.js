@@ -68,7 +68,7 @@ $("#ed").onclick=()=>{
   edit=document.body.classList.toggle("edit");
   document.querySelectorAll("#list .r,#list .sp").forEach(r=>r.draggable=edit);
   $("#ed").classList.toggle("on",edit);
-  if(!edit){D=D.filter(g=>!g.z);D.forEach(g=>g.l=g.l.filter(l=>!l.x));persist();render()}
+  if(!edit){D=D.filter(g=>!g.z);D.forEach(g=>g.l=g.l.filter(l=>!l.x));persist();resnap();render()}
   $("#ed").innerHTML=(edit?OK:PEN)+`<span>${edit?"Terminer":"Modifier"}</span>`;
   document.querySelectorAll(".add").forEach(b=>b.tabIndex=edit?0:-1);
 };

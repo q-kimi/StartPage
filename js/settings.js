@@ -24,7 +24,7 @@ function sheet(){
   <h4>Recherche</h4>
   <div class="row col"><div class="l">Moteur par défaut</div>${seg("eng",S.ord.map(i=>[i,E[i][0],S.hid.includes(i)]))}</div>
   <h4>Moteurs et IA</h4>
-  <p class="note">Glisse les moteurs sous la barre de recherche pour les réordonner, ou utilise Alt+Gauche/Droite sur un moteur. En mode Modifier, Alt+Haut/Bas déplace le groupe ou le favori sélectionné. Ctrl+Z annule, Ctrl+Maj+Z rétablit.</p>
+  <p class="note">Glisse les moteurs sous la barre de recherche pour les réordonner, ou utilise Alt+Gauche/Droite sur un moteur. En mode Modifier, Alt+Haut/Bas déplace le groupe ou le favori sélectionné. Ctrl+Z annule, Ctrl+Maj+Z rétablit (l'historique est gardé jusqu'à la fermeture de l'onglet). Alt+Haut/Bas déplace aussi un groupe hors du mode Modifier.</p>
   ${S.ord.map(i=>`<div class="row"><div class="eg"><img src="${esc(fd(E[i][2]))}" data-d="${esc(E[i][2])}" width="18" height="18" alt=""><span class="l">${esc(E[i][0])}</span></div><div class="eg">${i>=NB?`<button class="mini" data-del="${i}">Supprimer</button>`:""}<button class="sw" role="switch" aria-checked="${!S.hid.includes(i)}" data-hid="${i}" aria-label="${esc(E[i][0])}"></button></div></div>`).join("")}
   <div class="row col"><div class="l">Ajouter un moteur</div><input class="inp" id="en" placeholder="Nom" maxlength="20" autocomplete="off"><input class="inp" id="eu" placeholder="https://exemple.com/search?q=%s" autocomplete="off"><button class="btn" id="ea">Ajouter</button></div>
   ${sw("tab","Nouvel onglet","Ouvre les favoris et les recherches dans un nouvel onglet.")}
@@ -66,7 +66,7 @@ $("#sbody").onclick=e=>{
   }
   else if(t.id==="ex"){
     const a=document.createElement("a");
-    a.href=URL.createObjectURL(new Blob([JSON.stringify({favoris:live(),reglages:ser()},null,2)],{type:"application/json"}));
+    a.href=URL.createObjectURL(new Blob([JSON.stringify({favoris:live(),reglages:ser(),usage:load("spu",{})},null,2)],{type:"application/json"}));
     a.download="start-page.json";a.click();URL.revokeObjectURL(a.href);toast("Export terminé");
   }
   else if(t.id==="im")$("#fi").click();
@@ -95,7 +95,9 @@ $("#sbody").onchange=async e=>{
   try{
     const j=JSON.parse(await e.target.files[0].text()),d=clean(j.favoris);
     if(!d)throw 0;
-    D=d;if(j.reglages&&typeof j.reglages==="object")S=thaw({...SD,...pickS(j.reglages)});
+    D=d;
+    if(j.usage&&typeof j.usage==="object"){const m={};for(const[k,v]of Object.entries(j.usage))if(okL(k)&&Number.isInteger(v)&&v>0)m[k]=v;store("spu",m)}
+    if(j.reglages&&typeof j.reglages==="object")S=thaw({...SD,...pickS(j.reglages)});
     engInit();chips();
     persist();saveS();apply();place();tick();render();sheet();toast("Import terminé");
   }catch{toast("Fichier invalide")}

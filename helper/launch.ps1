@@ -16,11 +16,13 @@ function Load-Apps {
 
 if ($Url -match '^startpage://pick/?$') {
     Add-Type -AssemblyName System.Windows.Forms
+    [System.Windows.Forms.Clipboard]::Clear()
     $d = New-Object System.Windows.Forms.OpenFileDialog
     $d.Filter = 'Applications (*.exe)|*.exe'
     $d.Title = 'Choisir une application'
     if ($d.ShowDialog() -ne [System.Windows.Forms.DialogResult]::OK) { exit }
     $apps = Load-Apps
+    foreach ($k in @($apps.Keys)) { if (-not (Test-Path -LiteralPath $apps[$k])) { $apps.Remove($k) } }
     do { $id = -join ((1..8) | ForEach-Object { '{0:x}' -f (Get-Random -Maximum 16) }) } while ($apps.ContainsKey($id))
     $apps[$id] = $d.FileName
     New-Item -ItemType Directory -Force -Path $dir | Out-Null

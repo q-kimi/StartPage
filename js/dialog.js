@@ -50,13 +50,14 @@ $("#dv").onchange=()=>{clearTimeout(pt);prev()};
 $("#dk").oninput=()=>{clearTimeout(pt);pt=setTimeout(prev,500)};
 $("#da").innerHTML=[...APPS].filter(([k])=>k!=="startpage").map(([k,a])=>`<button type="button" class="chip" aria-pressed="false" data-p="${k}" data-u="${esc(a[2])}"><img src="${esc(fd(a[0]))}" data-d="${a[0]}" alt="" width="16" height="16">${esc(a[1])}</button>`).join("")+'<button type="button" class="chip" data-pick="1">Choisir un .exe...</button>';
 // .exe local: le helper Windows (dossier helper/) ouvre l'Explorateur et copie le lien startpage://run/ID dans le presse-papiers
-let pickWait=false;
+let pickWait=0;
 addEventListener("focus",()=>{
-  if(!pickWait)return;pickWait=false;
-  navigator.clipboard.readText().then(t=>{t=t.trim();if(t.startsWith("startpage://run/")&&ap(t)){$("#dv").value=t;$("#dn").value=autoN="";prev();toast("Application ajoutée au lien")}else toast("Aucun .exe choisi")}).catch(()=>toast("Colle le lien (Ctrl+V) dans le champ"));
+  if(Date.now()>pickWait)return;
+  // le focus revient aussi apres le prompt du navigateur: on attend le lien du helper jusqu'a 2 min
+  navigator.clipboard.readText().then(t=>{t=t.trim();if(t.startsWith("startpage://run/")&&ap(t)){pickWait=0;$("#dv").value=t;$("#dn").value=autoN="";prev();toast("Application ajoutée au lien")}}).catch(()=>{pickWait=0;toast("Colle le lien (Ctrl+V) dans le champ")});
 });
 $("#da").onclick=e=>{const b=e.target.closest("button");if(!b)return;
-  if(b.dataset.pick){pickWait=true;toast("Choisis l'exe dans la fenêtre Windows (helper requis, voir README)");location.href="startpage://pick";return}$("#dv").value=b.dataset.u;$("#dn").value=autoN="";prev();$("#dn").focus()};
+  if(b.dataset.pick){pickWait=Date.now()+12e4;toast("Choisis l'exe dans la fenêtre Windows (helper requis, voir README)");location.href="startpage://pick";return}$("#dv").value=b.dataset.u;$("#dn").value=autoN="";prev();$("#dn").focus()};
 $("#dc").onclick=()=>$("#dlg").close();
 $("#df").onsubmit=e=>{
   let n=$("#dn").value.trim();const v=norm($("#dv").value);
@@ -65,7 +66,7 @@ $("#df").onsubmit=e=>{
     if(!n)n=nameOf(v);
   }
   if(egi>=0){D[egi].n=n;D[egi].i=pick}
-  else if(tgt===null)D.push({n,i:pick,l:[]});else{const k=norm($("#dk").value),l=$("#dk").value.trim()&&ok(k)?{n,u:v,k}:{n,u:v};if(el>=0)D[tgt].l[el]=l;else D[tgt].l.push(l)}
+  else if(tgt===null)D.push({n,i:pick,l:[]});else{const k=norm($("#dk").value),l=$("#dk").value.trim()&&ok(k)?{n,u:v,k}:{n,u:v};if(el>=0){const o=D[tgt].l[el].u,m=load("spu",{});if(o!==v&&m[o]){m[v]=(m[v]||0)+m[o];delete m[o];store("spu",m)}D[tgt].l[el]=l}else D[tgt].l.push(l)}
   saveD();
 };
 // ferme seulement si le clic commence ET finit sur le fond (une selection de texte relachee dehors ne ferme plus)
